@@ -3,7 +3,10 @@ package com.example.awaism47.myapplication;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,20 +17,42 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
-    Spinner spinner;
+    Spinner spinner_spindle;
+    Spinner spinner_feedrate;
+    float Changed_Spindle_Speed;
+    float Changed_Feed_Rate;
+
+    EditText Current_SpindleSpeed;
+    EditText Current_Feed_Rate;
+    EditText Current_Tool_Diameter;
+    EditText Current_Number_Of_Teeth;
+
+
     ArrayAdapter<CharSequence> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinner = (Spinner) findViewById(R.id.new_spindle_speed);
+        Current_SpindleSpeed = (EditText) findViewById(R.id.spindle_speed);
+        Current_Feed_Rate = (EditText) findViewById(R.id.feed_rate);
+        Current_Tool_Diameter = (EditText) findViewById(R.id.tool_diameter);
+        Current_Number_Of_Teeth = (EditText) findViewById(R.id.number_of_teeth);
+        spinner_spindle = (Spinner) findViewById(R.id.new_spindle_speed);
         adapter = ArrayAdapter.createFromResource(this,R.array.new_spindle_speed,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_spindle.setAdapter(adapter);
+        spinner_spindle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText()
+
+
+                String SpindleSpeed = spinner_spindle.getSelectedItem().toString();
+                SpindleSpeed = SpindleSpeed.replaceAll("%", "");
+                Changed_Spindle_Speed =  Float.parseFloat(SpindleSpeed);
+                Changed_Spindle_Speed=Changed_Spindle_Speed/100;
+
+
             }
 
             @Override
@@ -35,36 +60,184 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        spinner = (Spinner) findViewById(R.id.new_feed_rate);
+        spinner_feedrate = (Spinner) findViewById(R.id.new_feed_rate);
         adapter = ArrayAdapter.createFromResource(this,R.array.new_feed_rate,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
+        spinner_feedrate.setAdapter(adapter);
+        spinner_feedrate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+
+                String FeedRate = spinner_feedrate.getSelectedItem().toString();
+                FeedRate = FeedRate.replaceAll("%", "");
+                Changed_Feed_Rate=  Float.parseFloat(FeedRate);
+                Changed_Feed_Rate=Changed_Feed_Rate/100;
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        Current_SpindleSpeed.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if(Current_SpindleSpeed.getText().toString().trim().equalsIgnoreCase("")){
+                    Current_SpindleSpeed.setError("Enter Programmed Spindle Speed");
+                }
+
+            }
+        });
+        Current_SpindleSpeed.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Current_SpindleSpeed.setError(null);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Current_SpindleSpeed.setError(null);
+
+            }
+        });
+
+        Current_Feed_Rate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if(Current_Feed_Rate.getText().toString().trim().equalsIgnoreCase("")){
+                    Current_Feed_Rate.setError("Enter Programmed Feed Rate");
+                }
+
+            }
+        });
+        Current_Feed_Rate.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Current_Feed_Rate.setError(null);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Current_Feed_Rate.setError(null);
+
+            }
+        });
+        Current_Tool_Diameter.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if(Current_Tool_Diameter.getText().toString().trim().equalsIgnoreCase("")){
+                    Current_Tool_Diameter.setError("Enter Tool Diameter in mm");
+                }
+
+            }
+        });
+        Current_Tool_Diameter.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Current_Tool_Diameter.setError(null);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Current_Tool_Diameter.setError(null);
+
+            }
+        });
+
+        Current_Number_Of_Teeth.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if(Current_Number_Of_Teeth.getText().toString().trim().equalsIgnoreCase("")){
+                    Current_Number_Of_Teeth.setError("Enter number of cutting teeth");
+                }
+
+            }
+        });
+        Current_Number_Of_Teeth.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Current_Number_Of_Teeth.setError(null);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Current_Number_Of_Teeth.setError(null);
+
+            }
+        });
     }
+
+
 
     public void calculate(View view) {
 
         EditText spindleSpeed = (EditText) findViewById(R.id.spindle_speed);
-        //String speedString=spindleSpeed.getText().toString();       //this will get a spindle speed string
-
         float speed = Float.valueOf(spindleSpeed.getText().toString());
-       // int speed=Integer.parseInt(speedString);                   //this will convert string to number
+
         EditText diameter = (EditText) findViewById(R.id.tool_diameter);
-        //String diaString=diameter.getText().toString();       //this will get a spindle speed string
+
         float dia = Float.valueOf(diameter.getText().toString());
-        //double dia = Double.parseDouble(diaString.getText().toString());                  //this will convert string to number
+
         EditText feedRate = (EditText) findViewById(R.id.feed_rate);
-        //String feedString=feedRate.getText().toString();       //this will get a spindle speed string
+
 
         float feed = Float.valueOf(feedRate.getText().toString());
-        //int feed=Integer.parseInt(feedString);                 //this will convert string to number
+
         EditText numberOfTeeth = (EditText) findViewById(R.id.number_of_teeth);
-        //String teethString=numberOfTeeth.getText().toString();       //this will get a spindle speed string
+
 
         float teeth = Float.valueOf(numberOfTeeth.getText().toString());
-        //int teeth=Integer.parseInt(teethString);                 //this will convert string to number
-        double feedPerTooth = ((feed*1.0)/(speed*teeth));
-        double cuttingSpeed = (dia*3.14*speed)/(1000);
+
+        double feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
+        double cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);
         String   FPT = new DecimalFormat("0.00").format(feedPerTooth);
         String surfaceSpeed = new DecimalFormat("0.00").format(cuttingSpeed);
 
@@ -82,50 +255,42 @@ public class MainActivity extends AppCompatActivity {
     private void displayMessage(String message) {
         TextView resultsTextView = (TextView) findViewById(R.id.results);
         EditText spindleSpeed = (EditText) findViewById(R.id.spindle_speed);
-        //String speedString=spindleSpeed.getText().toString();       //this will get a spindle speed string
-
         float speed = Float.valueOf(spindleSpeed.getText().toString());
-        // int speed=Integer.parseInt(speedString);                   //this will convert string to number
         EditText diameter = (EditText) findViewById(R.id.tool_diameter);
-        //String diaString=diameter.getText().toString();       //this will get a spindle speed string
         float dia = Float.valueOf(diameter.getText().toString());
-        //double dia = Double.parseDouble(diaString.getText().toString());                  //this will convert string to number
         EditText feedRate = (EditText) findViewById(R.id.feed_rate);
-        //String feedString=feedRate.getText().toString();       //this will get a spindle speed string
 
         float feed = Float.valueOf(feedRate.getText().toString());
-        //int feed=Integer.parseInt(feedString);                 //this will convert string to number
         EditText numberOfTeeth = (EditText) findViewById(R.id.number_of_teeth);
-        //String teethString=numberOfTeeth.getText().toString();       //this will get a spindle speed string
 
         float teeth = Float.valueOf(numberOfTeeth.getText().toString());
 
-        double feedPerTooth = ((feed*1.0)/(speed*teeth));
-        double cuttingSpeed = (dia*3.14*speed)/(1000);
+        double feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
+        double cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);
         String errors = "";
 
 
         if (feedPerTooth >0.26){
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
-            errors = "Feed rate is too high";
+            errors = "Parameters outside the limits";
 
         } else if (feedPerTooth<0.07){
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
-            errors = "Feed rate is too low";
+            errors = "Parameters outside the limits";
         }else if (cuttingSpeed<451){
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
-            errors = "Cutting speed is too low";
+            errors = "Parameters outside the limits";
         }else if (cuttingSpeed>5429){
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
-            errors = "Cutting speed is too High";
+            errors = "Parameters outside the limits";
 
 
 
 
 
 
-        } else { resultsTextView.setTextColor(Color.parseColor("green"));
-            errors="OK to use Feed Rate and cutting Speed" ;}
+        } else { resultsTextView.setTextColor(Color.parseColor("#8bc34a"));
+            errors="Parameters within the limits" ;}
 
         resultsTextView.setText(message + "\n" + errors);
     }
