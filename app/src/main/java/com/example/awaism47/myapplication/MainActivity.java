@@ -17,10 +17,17 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
+    //Defined objects & variables
     Spinner spinner_spindle;
     Spinner spinner_feedrate;
     float Changed_Spindle_Speed;
     float Changed_Feed_Rate;
+    float speed;
+    float dia;
+    float teeth;
+    float feed;
+    double feedPerTooth;
+    double cuttingSpeed;
 
     EditText Current_SpindleSpeed;
     EditText Current_Feed_Rate;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //When spinner is selected this converts String to float
 
 
                 String SpindleSpeed = spinner_spindle.getSelectedItem().toString();
@@ -87,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
+                //This throws up an error if user does not enter a value in this field
+                //Found this code online and not sure if its the most efficient way
 
                 if(Current_SpindleSpeed.getText().toString().trim().equalsIgnoreCase("")){
                     Current_SpindleSpeed.setError("Enter Programmed Spindle Speed");
@@ -110,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                Current_SpindleSpeed.setError(null);
+                public void afterTextChanged(Editable s) {
+                    Current_SpindleSpeed.setError(null);
 
             }
         });
@@ -220,24 +230,30 @@ public class MainActivity extends AppCompatActivity {
     public void calculate(View view) {
 
         EditText spindleSpeed = (EditText) findViewById(R.id.spindle_speed);
-        float speed = Float.valueOf(spindleSpeed.getText().toString());
-
         EditText diameter = (EditText) findViewById(R.id.tool_diameter);
-
-        float dia = Float.valueOf(diameter.getText().toString());
-
         EditText feedRate = (EditText) findViewById(R.id.feed_rate);
-
-
-        float feed = Float.valueOf(feedRate.getText().toString());
-
         EditText numberOfTeeth = (EditText) findViewById(R.id.number_of_teeth);
+        String SS= spindleSpeed.getText().toString();
+        String Dia= diameter.getText().toString();
+        String FR= feedRate.getText().toString();
+        String NOT=numberOfTeeth.getText().toString();
 
+        if (SS.equals("") || Dia.equals("") || Dia.equals(".") || FR.equals("") || NOT.equals("") ){
+            speed=0;
+            dia=0;
+            feed=0;
+            teeth=0;
+            feedPerTooth=0;
+            cuttingSpeed=0;
+        }
+        else {
+        speed = Float.valueOf(SS);
+        dia = Float.valueOf(Dia);
+        feed = Float.valueOf(FR);
+        teeth = Float.valueOf(NOT);
 
-        float teeth = Float.valueOf(numberOfTeeth.getText().toString());
-
-        double feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
-        double cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);
+        feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
+        cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);}
         String   FPT = new DecimalFormat("0.00").format(feedPerTooth);
         String surfaceSpeed = new DecimalFormat("0.00").format(cuttingSpeed);
 
@@ -254,19 +270,9 @@ public class MainActivity extends AppCompatActivity {
    */
     private void displayMessage(String message) {
         TextView resultsTextView = (TextView) findViewById(R.id.results);
-        EditText spindleSpeed = (EditText) findViewById(R.id.spindle_speed);
-        float speed = Float.valueOf(spindleSpeed.getText().toString());
-        EditText diameter = (EditText) findViewById(R.id.tool_diameter);
-        float dia = Float.valueOf(diameter.getText().toString());
-        EditText feedRate = (EditText) findViewById(R.id.feed_rate);
 
-        float feed = Float.valueOf(feedRate.getText().toString());
-        EditText numberOfTeeth = (EditText) findViewById(R.id.number_of_teeth);
-
-        float teeth = Float.valueOf(numberOfTeeth.getText().toString());
-
-        double feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
-        double cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);
+       // feedPerTooth = ((feed*Changed_Feed_Rate*1.0)/(speed*Changed_Spindle_Speed*teeth));
+       //cuttingSpeed = (dia*3.14*speed*Changed_Spindle_Speed)/(1000);
         String errors = "";
 
 
@@ -274,7 +280,14 @@ public class MainActivity extends AppCompatActivity {
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
             errors = "Parameters outside the limits";
 
-        } else if (feedPerTooth<0.07){
+        }
+        else if (feedPerTooth==0.00){
+            resultsTextView.setTextColor(Color.parseColor("#1a237e"));
+            errors = "Check if you entered the data correctly";
+        }else if (cuttingSpeed==0.00){
+            resultsTextView.setTextColor(Color.parseColor("#1a237e"));
+            errors = "Check if you entered the data correctly";}
+        else if (feedPerTooth<0.07){
             resultsTextView.setTextColor(Color.parseColor("#FF0000"));
             errors = "Parameters outside the limits";
         }else if (cuttingSpeed<451){
