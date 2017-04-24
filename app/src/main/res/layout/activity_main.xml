@@ -24,7 +24,8 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
                 android:text="@string/Programmed"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#263238"/>
 
 
         </LinearLayout>
@@ -150,7 +151,8 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
                 android:text="@string/limit"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#263238"/>
 
 
 
@@ -233,6 +235,23 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
+                android:text="New Parameters:"
+                android:textSize="18sp"
+                android:textColor="#263238"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
                 android:text="New Spindle Speed ="
 
                 android:textSize="17sp"/>
@@ -284,7 +303,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
                 android:text="Results: "
-
+                android:textColor="#263238"
                 android:textSize="18sp"/>
 
         </LinearLayout>
